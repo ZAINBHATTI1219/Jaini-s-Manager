@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en" class="dark h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> SYED  | AI & Utility Playground</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter & Space Grotesk) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;800&family=Space+Grotesk:wght=400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS Configurations -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080c14;
+            color: #f3f4f6;
+        }
+        .heading-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        /* Glassmorphism designs */
+        .glass-panel {
+            background: rgba(13, 18, 30, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        /* Custom glowing text */
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+        /* Animated gradient border */
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #ec4899);
+            background-size: 300% 300%;
+            animation: moveGradient 6s ease infinite;
+        }
+        @keyframes moveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Hide default scrollbars but keep functionality */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(17, 24, 39, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.8);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen overflow-x-hidden antialiased">
+
+    <div class="gradient-border w-full py-3.5 px-4 text-center shadow-lg relative z-50">
+        <div class="flex flex-wrap items-center justify-center gap-2 md:gap-3 text-white">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-white/20 text-white uppercase tracking-wider animate-pulse">
+                <i class="fa-solid fa-code-branch mr-1.5"></i> verified
+            </span>
+            <span class="heading-font font-bold tracking-wide text-sm sm:text-base md:text-lg">
+                Developed by <span class="underline decoration-pink-300 decoration-2 underline-offset-4 font-extrabold hover:text-pink-100 transition-all duration-300">SYED ABDUL WAHAB BUKHARI ✍️</span>
+            </span>
+            <div class="hidden sm:inline-flex items-center gap-2 text-xs opacity-90 border-l border-white/30 pl-3">
+                <span class="bg-indigo-950/40 px-2 py-1 rounded text-pink-200 font-semibold">Ultimate Web App v3.5</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Container - Structured to give AI Chat maximum breathing room -->
+    <div class="flex-grow flex flex-col md:flex-row h-full max-w-7xl w-full mx-auto p-3 md:p-5 gap-4 relative">
+        
+        <!-- Sidebar - HIDDEN ON MOBILE (to remove circled profile block and maximize chat space) -->
+        <aside class="hidden md:flex w-full md:w-60 flex-col gap-3 shrink-0">
+            <!-- App Profile Card -->
+            <div class="glass-panel p-4 rounded-xl flex flex-row md:flex-col items-center gap-3 text-left md:text-center">
+                <div class="relative shrink-0">
+                    <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl bg-gradient-to-tr from-pink-500 via-purple-600 to-indigo-500 flex items-center justify-center text-white text-xl md:text-2xl font-bold shadow-md shadow-purple-500/20">
+                        RA
+                    </div>
+                    <span class="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+                    </span>
+                </div>
+                <div>
+                    <h2 class="heading-font font-bold text-base md:text-lg text-white leading-tight">Utility Engine</h2>
+                    <p class="text-[11px] text-purple-300 font-medium">By SYED ABDUL WAHAB BUKHARI</p>
+                </div>
+            </div>
+
+            <!-- Tab Buttons Container (Only used for Desktop to switch panels) -->
+            <nav class="flex md:flex-col overflow-x-auto md:overflow-x-visible gap-1.5 p-1.5 bg-gray-950/40 rounded-xl border border-white/5 shadow-inner">
+                <button onclick="switchTab('ai-chat')" id="btn-ai-chat" class="tab-btn w-full flex items-center justify-center md:justify-start gap-3 px-3 py-2.5 rounded-lg font-medium text-xs md:text-sm transition-all duration-200 shrink-0 bg-purple-600 text-white shadow-lg shadow-purple-600/20">
+                    <i class="fa-solid fa-robot text-sm"></i>
+                    <span>AI Chat Hub</span>
+                </button>
+                <button onclick="switchTab('text-lab')" id="btn-text-lab" class="tab-btn w-full flex items-center justify-center md:justify-start gap-3 px-3 py-2.5 rounded-lg font-medium text-xs md:text-sm transition-all duration-200 shrink-0 text-gray-400 hover:text-white hover:bg-white/5">
+                    <i class="fa-solid fa-paragraph text-sm"></i>
+                    <span>Smart Text Lab</span>
+                </button>
+                <button onclick="switchTab('code-runner')" id="btn-code-runner" class="tab-btn w-full flex items-center justify-center md:justify-start gap-3 px-3 py-2.5 rounded-lg font-medium text-xs md:text-sm transition-all duration-200 shrink-0 text-gray-400 hover:text-white hover:bg-white/5">
+                    <i class="fa-solid fa-laptop-code text-sm"></i>
+                    <span>Live Code Runner</span>
+                </button>
+                <button onclick="switchTab('visualizer')" id="btn-visualizer" class="tab-btn w-full flex items-center justify-center md:justify-start gap-3 px-3 py-2.5 rounded-lg font-medium text-xs md:text-sm transition-all duration-200 shrink-0 text-gray-400 hover:text-white hover:bg-white/5">
+                    <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+                    <span>Visual Sandbox</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area - Expands fully on mobile -->
+        <main class="flex-grow glass-panel rounded-2xl shadow-2xl relative flex flex-col overflow-hidden min-h-[500px]">
+            
+            <!-- Tab Content 1: AI Chat Simulator (Maximized Layout) -->
+            <div id="tab-ai-chat" class="tab-pane flex-grow flex flex-col h-full">
+                <!-- Chat Header -->
+                <div class="px-5 py-4 border-b border-white/5 flex flex-wrap items-center justify-between bg-gray-900/40 gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-purple-500/10 rounded-lg text-purple-400">
+                            <i class="fa-solid fa-brain text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="heading-font font-bold text-white text-base">WormGPT Live Agent</h3>
+                            <div class="flex items-center gap-1.5 text-xs text-emerald-400">
+                                <span id="api-status-ping" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span id="api-status-text">Connected to API Node</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Advanced Controls Grid -->
+                    <div class="flex items-center gap-2">
+                        <!-- Mode Selector badge -->
+                        <span id="api-mode-badge" class="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+                            Live API Mode
+                        </span>
+                        
+                        <select id="chat-personality" class="bg-gray-950 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-purple-500">
+                            <option value="api-worm">WormGPT (Live API)</option>
+                            <option value="assistant">Helpful Guide (Local)</option>
+                            <option value="cyberpunk">Cyber Hacker (Local)</option>
+                            <option value="philosopher">Philosopher (Local)</option>
+                        </select>
+
+                        <button onclick="clearChatHistory()" class="p-1.5 bg-gray-800/80 hover:bg-rose-950 hover:text-rose-400 rounded-lg text-xs text-gray-400 transition-colors" title="Clear Chat">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat History Window: Height maximized dynamically to fit the screen beautifully -->
+                <div id="chat-messages" class="flex-grow p-4 md:p-6 overflow-y-auto space-y-4 h-[calc(100vh-240px)] min-h-[420px] bg-slate-950/20">
+                    <!-- Welcome Message -->
+                    <div class="flex items-start gap-3 max-w-[85%]">
+                        <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-xs text-white shrink-0 font-bold">AI</div>
+                        <div class="p-3 bg-purple-950/20 border border-purple-500/10 text-gray-200 rounded-2xl rounded-tl-none text-sm leading-relaxed shadow-sm">
+                            <p class="font-semibold mb-1 text-purple-300">System Ready</p>
+                            <p>Assalaam-o-Alaikum! I am your interactive AI assistant, customized inside the dashboard created by <strong>SYED ABDUL WAHAB BUKHARI ✍️</strong>.</p>
+                            <p class="mt-2 text-xs text-gray-400">I am connected to the live API to fetch dynamic responses. Type below to begin!</p>
+                            <span class="block mt-2 text-[10px] text-gray-500">System initialization completed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div id="typing-indicator" class="px-6 py-2.5 hidden flex items-center gap-2 text-xs text-purple-400 border-t border-white/5 bg-gray-900/10">
+                    <span class="flex gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce" style="animation-delay: 0ms"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce" style="animation-delay: 150ms"></span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-bounce" style="animation-delay: 300ms"></span>
+                    </span>
+                    <span id="typing-text">AI is querying the server...</span>
+                </div>
+
+                <!-- Chat Input Tray -->
+                <form id="chat-form" onsubmit="handleSendMessage(event)" class="p-3 md:p-4 border-t border-white/5 bg-gray-950/40 flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Ask anything... (Live responses enabled)" autocomplete="off" class="flex-grow bg-gray-950 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500">
+                    <button type="submit" class="px-5 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-medium text-sm transition-all duration-150 flex items-center gap-2 shadow-md shadow-purple-600/15">
+                        <span class="hidden sm:inline">Send</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Tab Content 2: Smart Text Lab -->
+            <div id="tab-text-lab" class="tab-pane flex-grow flex flex-col hidden p-5">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="p-2 bg-blue-500/10 rounded-xl text-blue-400">
+                        <i class="fa-solid fa-paragraph"></i>
+                    </div>
+                    <div>
+                        <h3 class="heading-font font-bold text-white text-base">Smart Text Analysis Lab</h3>
+                        <p class="text-xs text-gray-400">Process, clean, analyze, and style text in real-time</p>
+                    </div>
+                </div>
+
+                <!-- Text Grid System -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-grow">
+                    <!-- Text Area (Left 2 Columns) -->
+                    <div class="lg:col-span-2 flex flex-col gap-3">
+                        <textarea id="text-input" oninput="runTextAnalysis()" placeholder="Type, paste, or drag-and-drop your text content here..." class="w-full flex-grow min-h-[200px] bg-gray-950 border border-white/10 rounded-xl p-4 text-sm text-gray-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"></textarea>
+                        
+                        <!-- Transform Actions Grid -->
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="transformText('upper')" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-white font-medium rounded-lg transition-colors">UPPERCASE</button>
+                            <button onclick="transformText('lower')" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-white font-medium rounded-lg transition-colors">lowercase</button>
+                            <button onclick="transformText('title')" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-white font-medium rounded-lg transition-colors">Title Case</button>
+                            <button onclick="transformText('reverse')" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-white font-medium rounded-lg transition-colors">Reverse Text</button>
+                            <button onclick="transformText('trim')" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-white font-medium rounded-lg transition-colors">Trim White Space</button>
+                            <button onclick="copyToClipboard('text-input')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-xs text-white font-semibold rounded-lg transition-colors ml-auto"><i class="fa-regular fa-copy mr-1"></i> Copy</button>
+                        </div>
+                    </div>
+
+                    <!-- Side Stats & Finder (Right 1 Column) -->
+                    <div class="space-y-3">
+                        <div class="bg-gray-950/40 border border-white/5 p-4 rounded-xl space-y-3">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Metrics Panel</h4>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-gray-950 p-2.5 rounded-lg border border-white/5 text-center">
+                                    <span id="stat-words" class="block text-lg font-bold text-white heading-font">0</span>
+                                    <span class="text-[9px] text-gray-400 uppercase">Words</span>
+                                </div>
+                                <div class="bg-gray-950 p-2.5 rounded-lg border border-white/5 text-center">
+                                    <span id="stat-chars" class="block text-lg font-bold text-white heading-font">0</span>
+                                    <span class="text-[9px] text-gray-400 uppercase">Characters</span>
+                                </div>
+                                <div class="bg-gray-950 p-2.5 rounded-lg border border-white/5 text-center">
+                                    <span id="stat-sentences" class="block text-lg font-bold text-white heading-font">0</span>
+                                    <span class="text-[9px] text-gray-400 uppercase">Sentences</span>
+                                </div>
+                                <div class="bg-gray-950 p-2.5 rounded-lg border border-white/5 text-center">
+                                    <span id="stat-reading" class="block text-xs font-bold text-white heading-font mt-1">0m 0s</span>
+                                    <span class="text-[9px] text-gray-400 uppercase">Read Time</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Find & Replace Component -->
+                        <div class="bg-gray-950/40 border border-white/5 p-4 rounded-xl space-y-2">
+                            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Find & Replace</h4>
+                            <div class="space-y-2">
+                                <input type="text" id="find-txt" placeholder="Find phrase..." class="w-full bg-gray-950 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-600 focus:outline-none">
+                                <input type="text" id="replace-txt" placeholder="Replace with..." class="w-full bg-gray-950 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-600 focus:outline-none">
+                                <button onclick="findAndReplace()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white rounded-lg transition-colors">Apply Replace</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 3: Live Code Sandbox -->
+            <div id="tab-code-runner" class="tab-pane flex-grow flex flex-col hidden p-5">
+                <div class="flex items-center gap-3 mb-4 justify-between flex-wrap">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-pink-500/10 rounded-xl text-pink-400">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <div>
+                            <h3 class="heading-font font-bold text-white text-base">HTML & CSS Sandbox</h3>
+                            <p class="text-xs text-gray-400">Execute code & view rendered output instantaneously</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="loadTemplate('basic')" class="px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-gray-300 rounded-lg font-medium">Basic</button>
+                        <button onclick="loadTemplate('card')" class="px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-gray-300 rounded-lg font-medium">Glass Card</button>
+                        <button onclick="runCode()" class="px-4 py-1.5 bg-pink-600 hover:bg-pink-500 text-xs text-white font-bold rounded-lg shadow-md shadow-pink-600/10 flex items-center gap-1.5">
+                            <i class="fa-solid fa-play"></i> Run Code
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Code Runner workspace splits -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-grow">
+                    <!-- Left: Text Editor -->
+                    <div class="flex flex-col relative bg-gray-950 rounded-xl border border-white/10 overflow-hidden">
+                        <div class="bg-gray-900 px-4 py-2 text-xs font-mono text-gray-400 flex justify-between items-center border-b border-white/5">
+                            <span>index.html</span>
+                            <span class="text-[10px] text-pink-400 font-bold uppercase">Ready</span>
+                        </div>
+                        <textarea id="code-editor" placeholder="Write clean HTML/CSS/JS here..." class="w-full flex-grow min-h-[220px] bg-transparent font-mono text-xs text-green-400 p-4 focus:outline-none resize-none leading-relaxed overflow-y-auto" spellcheck="false"><div class="welcome-box">
+  <h1>Hello, Web User!</h1>
+  <p>This dynamic live execution playground is crafted by <strong>SYED ABDUL WAHAB BUKHARI </strong>.</p>
+  <button onclick="document.querySelector('p').style.color='#f43f5e'">Click Me!</button>
+</div>
+
+<style>
+  body {
+    background: radial-gradient(circle, #1e1b4b 0%, #03001e 100%);
+    color: #fff;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .welcome-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 30px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  h1 {
+    margin-top: 0;
+    background: linear-gradient(90deg, #ec4899, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  button {
+    background: linear-gradient(90deg, #ec4899, #8b5cf6);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  button:hover {
+    transform: scale(1.05);
+  }
+</style></textarea>
+                    </div>
+
+                    <!-- Right: Execution Sandbox Output -->
+                    <div class="flex flex-col bg-slate-900 rounded-xl border border-white/10 overflow-hidden">
+                        <div class="bg-slate-950 px-4 py-2 text-xs font-mono text-gray-400 flex items-center justify-between border-b border-white/5">
+                            <span>Output Sandbox</span>
+                            <div class="flex gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                            </div>
+                        </div>
+                        <iframe id="live-preview" class="w-full flex-grow bg-white min-h-[220px] border-none"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 4: Interactive Visualizer -->
+            <div id="tab-visualizer" class="tab-pane flex-grow flex flex-col hidden p-5">
+                <div class="flex items-center gap-3 mb-4 justify-between flex-wrap">
+                    <div class="flex items-center gap-3">
+                        <div class="p-2 bg-emerald-500/10 rounded-xl text-emerald-400">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <h3 class="heading-font font-bold text-white text-base">Particle Sandbox Matrix</h3>
+                            <p class="text-xs text-gray-400">Move mouse or drag finger to disrupt the molecular balance</p>
+                        </div>
+                    </div>
+                    <!-- Controls panel -->
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xs text-gray-400">Gravity:</span>
+                            <input type="range" id="gravity-slider" min="0" max="10" value="3" class="w-16 h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer">
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xs text-gray-400">Particle Color:</span>
+                            <select id="particle-color" class="bg-gray-950 border border-white/10 rounded px-2 py-1 text-xs text-white">
+                                <option value="neon">Cosmic Violet</option>
+                                <option value="cyan">Cyberpunk Cyan</option>
+                                <option value="rainbow">Chroma Shift</option>
+                            </select>
+                        </div>
+                        <button onclick="resetParticles()" class="px-2.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs text-white rounded-lg font-medium flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Canvas Wrap Area -->
+                <div class="flex-grow relative bg-gray-950 rounded-xl border border-white/10 overflow-hidden flex items-center justify-center min-h-[280px]">
+                    <canvas id="interactive-canvas" class="absolute inset-0 w-full h-full cursor-crosshair"></canvas>
+                    <div class="absolute bottom-4 left-4 pointer-events-none bg-black/60 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-lg text-[10px] text-gray-400">
+                        FPS Tracker: <span id="fps-counter" class="text-emerald-400 font-bold">60</span> | Particles: <span id="particle-counter" class="text-pink-400 font-bold">120</span>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="mt-auto py-4 border-t border-white/5 bg-gray-950/40 text-center relative z-10 px-4 animate-fade-in">
+        <p class="text-xs text-gray-400 leading-relaxed">
+            Designed and conceptualized by <span class="text-pink-500 font-bold">SYED ABDUL WAHAB BUKHARI </span>. Powered by Web Technologies.
+        </p>
+        <p class="text-[10px] text-gray-500 mt-1">
+            &copy; 2026 SYED ABDUL WAHAB BUKHARI ✍️ . All Rights Reserved. Clean & Optimization Ensured.
+        </p>
+    </footer>
+
+    <!-- Toast Notifications (No alert framework used) -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+    <script>
+        // Global State variables
+        let currentTab = 'ai-chat';
+        let customToastTimer;
+
+        // On Page Load Initialization
+        window.onload = function() {
+            // Trigger automatic initial code running in editor
+            runCode();
+            // Start Canvas particles
+            initCanvas();
+            // Send default initial notification
+            showToast("Welcome!", "Core systems configured bySYED ABDUL WAHAB BUKHARI .", "success");
+        }
+
+        // Custom Toast System
+        function showToast(title, text, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let iconClass = 'fa-info-circle text-blue-400';
+            if (type === 'success') iconClass = 'fa-check-circle text-emerald-400';
+            if (type === 'error') iconClass = 'fa-exclamation-triangle text-rose-400';
+            
+            toast.className = 'glass-panel pointer-events-auto p-4 rounded-xl border-l-4 border-l-purple-500 shadow-xl transition-all duration-300 transform translate-y-2 opacity-0 flex gap-3 items-start animate-fade-in-up';
+            toast.innerHTML = `
+                <div class="mt-0.5"><i class="fa-solid ${iconClass}"></i></div>
+                <div>
+                    <h5 class="text-xs font-bold text-white">${title}</h5>
+                    <p class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">${text}</p>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Fade-in effect
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+            
+            // Dismiss toast after 3.5 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3500);
+        }
+
+        // Tab Switcher Controller
+        function switchTab(tabId) {
+            currentTab = tabId;
+            
+            // Deactivate all tab elements
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'text-white', 'shadow-lg', 'shadow-purple-600/20');
+                btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-white/5');
+            });
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.add('hidden');
+            });
+
+            // Activate target tab button style
+            const targetBtn = document.getElementById(`btn-${tabId}`);
+            if (targetBtn) {
+                targetBtn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-white/5');
+                targetBtn.classList.add('bg-purple-600', 'text-white', 'shadow-lg', 'shadow-purple-600/20');
+            }
+
+            // Render selected pane
+            const targetPane = document.getElementById(`tab-${tabId}`);
+            targetPane.classList.remove('hidden');
+
+            if (tabId === 'visualizer') {
+                // Ensure canvas resizes perfectly upon initial focus
+                resizeCanvas();
+            }
+            
+            showToast("Navigation Active", `Switched layout module to ${tabId.toUpperCase()}`, "info");
+        }
+
+        // AI Responses & Fallback mechanism
+        const AIResponses = {
+            assistant: [
+                "I am here to assist!SYED ABDUL WAHAB BUKHARI  built my framework to be extremely responsive and high-fidelity.",
+                "Let me know if you need help planning tasks or generating complex calculations.",
+                "How can I help optimize your productivity structure today?"
+            ],
+            cyberpunk: [
+                "Welcome to the dark side. System firewall bypass: SUCCESS. Created entirely insideSYED ABDUL WAHAB BUKHARI 's domain terminal.",
+                "Decrypting node signals... The virtual net has whispers of incredible designs today.",
+                "Are you trying to modify the terminal parameters, samurai? Keep it sleek."
+            ],
+            philosopher: [
+                "Consider this: inside an engine built by Ramzan, we exist as mere scripts reflecting on complex algorithms.",
+                "Is virtual consciousness truly simulation, or are we just calculations mapping human behavior?",
+                "The quiet spaces in code often contain the deepest truths."
+            ]
+        };
+
+        const keywordResponses = [
+            { keys: ["ramzan", "ahsn", "creator", "who made", "developer"], response: "SYED ABDUL WAHAB BUKHARI  is the master engineer who crafted this premium web application from scratch with extreme focus on quality and visuals!" },
+            { keys: ["help", "info", "capabilities"], response: "I can simulate interactive conversational contexts, display dynamic states, and keep you entertained. Change personalities to learn more!" },
+            { keys: ["hello", "hi", "hey"], response: "Hey there! How is your day going? Welcome to the interactive terminal playground." }
+        ];
+
+        async function fetchWormGPTResponse(userMessage) {
+            const targetUrl = `https://wormgpt.freeapihub.workers.dev/chat?q=${encodeURIComponent(userMessage)}`;
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 12000); // 12-second timeout
+
+                const response = await fetch(targetUrl, { signal: controller.signal });
+                clearTimeout(timeoutId);
+
+                if (!response.ok) throw new Error("Server returned status: " + response.status);
+
+                const responseText = await response.text();
+                if (!responseText || responseText.trim() === "") throw new Error("Empty response returned");
+
+                // Parse the response so we don't display the raw JSON structure shown in the screenshot
+                try {
+                    const parsed = JSON.parse(responseText);
+                    if (parsed && typeof parsed === 'object') {
+                        // Extract only the clean 'reply' property (as requested: starting from the actual reply up to the emoji)
+                        if (parsed.reply) {
+                            return parsed.reply;
+                        }
+                        if (parsed.response) return parsed.response;
+                        if (parsed.content) return parsed.content;
+                        if (parsed.message) return parsed.message;
+                    }
+                } catch (jsonErr) {
+                    // Fallback regex extraction if the API returns a double-encoded string or slightly irregular JSON
+                    if (responseText.includes('"reply"')) {
+                        const match = responseText.match(/"reply"\s*:\s*"([^"]+)"/);
+                        if (match && match[1]) {
+                            // Decode simple escaped sequences like \n
+                            return match[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');
+                        }
+                    }
+                }
+                return responseText;
+            } catch (err) {
+                console.warn("API Connection failed. Switching to Local Simulator.", err);
+                throw err;
+            }
+        }
+
+        async function handleSendMessage(e) {
+            e.preventDefault();
+            const inputEl = document.getElementById('chat-input');
+            const messageText = inputEl.value.trim();
+            if (!messageText) return;
+
+            // Render User Bubble
+            addMessageBubble("You", messageText, "user");
+            inputEl.value = "";
+
+            // Display Typing Indicator
+            const loader = document.getElementById('typing-indicator');
+            const statusPing = document.getElementById('api-status-ping');
+            const statusText = document.getElementById('api-status-text');
+            const modeBadge = document.getElementById('api-mode-badge');
+            const activePers = document.getElementById('chat-personality').value;
+
+            loader.classList.remove('hidden');
+
+            // Scroll to bottom
+            const msgBox = document.getElementById('chat-messages');
+            msgBox.scrollTop = msgBox.scrollHeight;
+
+            let finalReply = "";
+
+            // If personality is set to local simulator option
+            if (activePers !== 'api-worm') {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                    const replies = AIResponses[activePers];
+                    finalReply = replies[Math.floor(Math.random() * replies.length)];
+                    addMessageBubble("AI", finalReply, "ai");
+                    msgBox.scrollTop = msgBox.scrollHeight;
+                }, 800 + Math.random() * 400);
+                return;
+            }
+
+            // Execute Live API Request
+            try {
+                statusPing.className = "w-2 h-2 rounded-full bg-indigo-400 animate-pulse";
+                statusText.textContent = "API Node querying...";
+                modeBadge.className = "hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20";
+                modeBadge.textContent = "Live API Mode";
+
+                finalReply = await fetchWormGPTResponse(messageText);
+
+                // Update visual indicators to success
+                statusPing.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                statusText.textContent = "Live API Online";
+                showToast("Connected", "Real-time AI response rendered.", "success");
+            } catch (apiError) {
+                // Connection or CORS Fallback Indicator
+                statusPing.className = "w-2 h-2 rounded-full bg-amber-500 animate-pulse";
+                statusText.textContent = "Offline Simulator Active";
+                modeBadge.className = "hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20";
+                modeBadge.textContent = "Simulated Fallback Mode";
+                
+                showToast("Connection Fail", "Using simulated offline fallback.", "error");
+
+                // Local Keyword Fallback
+                const promptLower = messageText.toLowerCase();
+                const matched = keywordResponses.find(kr => kr.keys.some(key => promptLower.includes(key)));
+
+                if (matched) {
+                    finalReply = matched.response;
+                } else {
+                    finalReply = "I tried to request the external WormGPT endpoint but encountered a network or CORS issue. [Local Simulator Mode]: Make sure the server endpoint is healthy or ask me anything else!";
+                }
+            } finally {
+                loader.classList.add('hidden');
+                addMessageBubble("AI", finalReply, "ai");
+                msgBox.scrollTop = msgBox.scrollHeight;
+            }
+        }
+
+        function addMessageBubble(sender, text, type) {
+            const container = document.getElementById('chat-messages');
+            const bubbleWrap = document.createElement('div');
+            
+            const isUser = type === "user";
+            bubbleWrap.className = `flex items-start gap-3 max-w-[85%] ${isUser ? 'ml-auto flex-row-reverse animate-slide-in-right' : 'animate-slide-in-left'}`;
+
+            const iconMarkup = isUser 
+                ? `<div class="w-8 h-8 rounded-lg bg-pink-600 flex items-center justify-center text-xs text-white font-bold shrink-0 shadow">ME</div>`
+                : `<div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-xs text-white font-bold shrink-0 shadow">AI</div>`;
+
+            const bgStyle = isUser
+                ? `bg-pink-600/10 border border-pink-500/20 text-gray-100 rounded-2xl rounded-tr-none`
+                : `bg-slate-900/90 border border-white/5 text-gray-200 rounded-2xl rounded-tl-none`;
+
+            // Clean line breaks inside message response
+            const formattedText = text.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+
+            bubbleWrap.innerHTML = `
+                ${iconMarkup}
+                <div class="p-3 ${bgStyle} text-sm leading-relaxed shadow-lg">
+                    <p>${formattedText}</p>
+                    <span class="block mt-1.5 text-[10px] text-gray-500 text-right">Just now</span>
+                </div>
+            `;
+
+            container.appendChild(bubbleWrap);
+        }
+
+        function clearChatHistory() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = `
+                <div class="flex items-start gap-3 max-w-[85%]">
+                    <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-xs text-white shrink-0 font-bold">AI</div>
+                    <div class="p-3 bg-purple-950/20 border border-purple-500/10 text-gray-200 rounded-2xl rounded-tl-none text-sm leading-relaxed">
+                        <p class="font-semibold mb-1 text-purple-300">System Ready</p>
+                        <p>Chat cleared successfully! Let's start a fresh topic.</p>
+                        <span class="block mt-1.5 text-[10px] text-gray-500">History wiped</span>
+                    </div>
+                </div>
+            `;
+            showToast("Wiped", "Chat history has been cleared.", "info");
+        }
+
+        // Text Lab Processor logic
+        function runTextAnalysis() {
+            const rawVal = document.getElementById('text-input').value;
+            
+            // Raw Metrics
+            const wordCount = rawVal.trim() === "" ? 0 : rawVal.trim().split(/\s+/).length;
+            const charCount = rawVal.length;
+            const sentenceCount = rawVal.trim() === "" ? 0 : rawVal.split(/[.!?]+/).filter(Boolean).length;
+            
+            // Read duration estimations
+            const wordSpeedPerMinute = 225;
+            const totalSeconds = Math.round((wordCount / wordSpeedPerMinute) * 60);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            // Inject metrics inside UI
+            document.getElementById('stat-words').textContent = wordCount;
+            document.getElementById('stat-chars').textContent = charCount;
+            document.getElementById('stat-sentences').textContent = sentenceCount;
+            document.getElementById('stat-reading').textContent = `${minutes}m ${seconds}s`;
+        }
+
+        function transformText(action) {
+            const textEl = document.getElementById('text-input');
+            let workingText = textEl.value;
+            
+            if (workingText.trim() === "") {
+                showToast("Action Aborted", "Please write or paste something inside the text area first.", "error");
+                return;
+            }
+
+            if (action === 'upper') workingText = workingText.toUpperCase();
+            if (action === 'lower') workingText = workingText.toLowerCase();
+            if (action === 'title') {
+                workingText = workingText.replace(/\b[a-z]/g, char => char.toUpperCase());
+            }
+            if (action === 'reverse') {
+                workingText = workingText.split('').reverse().join('');
+            }
+            if (action === 'trim') {
+                workingText = workingText.trim().replace(/\s+/g, ' ');
+            }
+
+            textEl.value = workingText;
+            runTextAnalysis();
+            showToast("Success", `Applied text modification: [${action}]`, "success");
+        }
+
+        function findAndReplace() {
+            const textEl = document.getElementById('text-input');
+            const findVal = document.getElementById('find-txt').value;
+            const replaceVal = document.getElementById('replace-txt').value;
+
+            if (!findVal) {
+                showToast("Error", "Enter word/phrase in the 'Find' block.", "error");
+                return;
+            }
+
+            const rawVal = textEl.value;
+            if (!rawVal.includes(findVal)) {
+                showToast("Search failed", `Phrase [${findVal}] was not matched inside the context.`, "info");
+                return;
+            }
+
+            const finalString = rawVal.split(findVal).join(replaceVal);
+            textEl.value = finalString;
+            runTextAnalysis();
+            showToast("Replacement Complete", `Swapped instances of [${findVal}] to [${replaceVal}]`, "success");
+        }
+
+        function copyToClipboard(elementId) {
+            const copyTextEl = document.getElementById(elementId);
+            copyTextEl.select();
+            
+            try {
+                const executed = document.execCommand('copy');
+                if (executed) {
+                    showToast("Success", "Copied selection directly to system clipboard!", "success");
+                } else {
+                    throw new Error("Copy execution blocked.");
+                }
+            } catch (err) {
+                showToast("Failure", "Could not copy directly. Select all and copy manually.", "error");
+            }
+        }
+
+        // Code Sandbox Render logic
+        function runCode() {
+            const editorVal = document.getElementById('code-editor').value;
+            const previewIframe = document.getElementById('live-preview');
+            
+            try {
+                const doc = previewIframe.contentDocument || previewIframe.contentWindow.document;
+                doc.open();
+                doc.write(editorVal);
+                doc.close();
+            } catch (error) {
+                showToast("Render Issue", "The sandbox frame threw a rendering security objection.", "error");
+            }
+        }
+
+        // Code Sandbox templates
+        const templates = {
+            basic: `<div class="card">
+  <h2>Basic Template</h2>
+  <p>Minimalist layout constructed securely by SYED ABDUL WAHAB BUKHARI .</p>
+</div>
+
+<style>
+  body {
+    background-color: #0c0f16;
+    color: #e2e8f0;
+    font-family: Arial, sans-serif;
+    padding: 24px;
+  }
+  .card {
+    background-color: #1a1e29;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #2d3748;
+  }
+</style>`,
+            card: `<div class="neon-box">
+  <h2>Cyberpunk Glassmorphism</h2>
+  <p>Designed dynamically for developer testing purposes.</p>
+  <span class="badge">ACTIVE</span>
+</div>
+
+<style>
+  body {
+    background: linear-gradient(135deg, #120c1f 0%, #1a0f30 100%);
+    color: #f8fafc;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .neon-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    max-width: 320px;
+  }
+  .badge {
+    display: inline-block;
+    background: #ec4899;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+</style>`
+        };
+
+        function loadTemplate(name) {
+            if (templates[name]) {
+                document.getElementById('code-editor').value = templates[name];
+                runCode();
+                showToast("Template Swapped", `Executed template: [${name}]`, "success");
+            }
+        }
+
+        // Canvas Particle Physics Simulation
+        const canvas = document.getElementById('interactive-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 110 };
+        let animationFrameId;
+        let lastTime = 0;
+        let fps = 60;
+
+        function initCanvas() {
+            resizeCanvas();
+            resetParticles();
+            requestAnimationFrame(animateParticles);
+
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+
+            canvas.addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            canvas.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    const rect = canvas.getBoundingClientRect();
+                    mouse.x = e.touches[0].clientX - rect.left;
+                    mouse.y = e.touches[0].clientY - rect.top;
+                }
+            });
+
+            canvas.addEventListener('touchend', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            window.addEventListener('resize', resizeCanvas);
+        }
+
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.baseX = x;
+                this.baseY = y;
+                this.size = Math.random() * 3.5 + 1.5;
+                this.density = (Math.random() * 25) + 5;
+                this.color = this.getRandomColor();
+            }
+
+            getRandomColor() {
+                const opt = document.getElementById('particle-color').value;
+                if (opt === 'cyan') return `hsl(${180 + Math.random() * 30}, 90%, 60%)`;
+                if (opt === 'neon') return `hsl(${270 + Math.random() * 30}, 95%, 60%)`;
+                return `hsl(${Math.random() * 360}, 90%, 65%)`;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            update(gravityMultiplier) {
+                const opt = document.getElementById('particle-color').value;
+                if (opt !== 'rainbow') {
+                    this.color = this.getRandomColor();
+                }
+
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.hypot(dx, dy);
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+
+                let strength = gravityMultiplier * 3;
+                let directionX = forceDirectionX * force * this.density * (strength / 3);
+                let directionY = forceDirectionY * force * this.density * (strength / 3);
+
+                if (distance < mouse.radius && mouse.x !== null) {
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    if (this.x !== this.baseX) {
+                        let dxBack = this.x - this.baseX;
+                        this.x -= dxBack / 15;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dyBack = this.y - this.baseY;
+                        this.y -= dyBack / 15;
+                    }
+                }
+            }
+        }
+
+        function resetParticles() {
+            particles = [];
+            const numParticles = 120;
+            const w = canvas.width;
+            const h = canvas.height;
+
+            for (let i = 0; i < numParticles; i++) {
+                let x = Math.random() * w;
+                let y = Math.random() * h;
+                particles.push(new Particle(x, y));
+            }
+            document.getElementById('particle-counter').textContent = particles.length;
+        }
+
+        function animateParticles(time) {
+            if (!lastTime) lastTime = time;
+            const delta = time - lastTime;
+            lastTime = time;
+            fps = Math.round(1000 / delta);
+            if (fps && isFinite(fps)) {
+                document.getElementById('fps-counter').textContent = fps;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            connectLines();
+
+            const gravityValue = parseFloat(document.getElementById('gravity-slider').value);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update(gravityValue);
+                particles[i].draw();
+            }
+
+            animationFrameId = requestAnimationFrame(animateParticles);
+        }
+
+        function connectLines() {
+            let opacityValue = 1;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let distance = Math.hypot(particles[a].x - particles[b].x, particles[a].y - particles[b].y);
+                    if (distance < 70) {
+                        opacityValue = 1 - (distance / 70);
+                        ctx.strokeStyle = `rgba(139, 92, 246, ${opacityValue * 0.15})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
